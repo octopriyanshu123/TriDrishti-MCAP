@@ -13,6 +13,11 @@ lz4/zstd dependency. To upgrade, replace that folder with
   `actual_rpm`, `current_a`) as JSON messages on `/demo/motor`.
 - `mcap_example_reader` prints the channels, the first messages, and
   per-topic message counts.
+- `mcap_image_writer` / `mcap_proto_image_writer` record a V4L2 camera as
+  `foxglove.CompressedImage` (JSON / protobuf), and
+  `mcap_compressed_proto_image_writer` records it as H.264
+  `foxglove.CompressedVideo`. See
+  [ImageLogger.md](ImageLogger.md) for setup and a comparison.
 
 ## Build
 
@@ -29,3 +34,14 @@ lz4/zstd dependency. To upgrade, replace that folder with
 ```
 
 Open `motor.mcap` in Foxglove or PlotJuggler to plot the fields.
+
+```bash
+# [output.mcap] [device] [seconds, 0=until Ctrl+C] [width] [height] [fps]
+./scripts/run_image_writer.sh camera.mcap /dev/video0 10 640 480 30
+./scripts/run_proto_image_writer.sh camera_proto.mcap /dev/video0 10 640 480 30
+# H.264 adds [bitrate_kbps]
+./scripts/run_compressed_proto_image_writer.sh camera_h264.mcap /dev/video0 10 640 480 30 2000
+```
+
+The protobuf writers need `libprotobuf-dev` and `protobuf-compiler`; the H.264
+writer also needs `libavcodec-dev`, `libavutil-dev` and `libswscale-dev`.
