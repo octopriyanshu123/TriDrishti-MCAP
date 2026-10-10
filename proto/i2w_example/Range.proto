@@ -1,0 +1,22 @@
+// A single distance reading from a 1D range sensor (ultrasonic, ToF, laser rangefinder).
+// Not a Foxglove schema; plot range over time in Foxglove's Plot panel.
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package i2w_example;
+
+message Range {
+  // Time of the reading
+  google.protobuf.Timestamp timestamp = 1;
+
+  // Frame of reference of the sensor
+  string frame_id = 2;
+
+  // Measured distance in metres
+  double range = 3;
+
+  // Sensor limits in metres; readings outside them are invalid
+  double min_range = 4;
+  double max_range = 5;
+}
